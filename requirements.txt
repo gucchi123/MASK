@@ -6,7 +6,6 @@ seaborn
 marketing_attribution_models
 dice-ml
 sklearn
-random
 jsonschema
 numpy
 scikit-learn
