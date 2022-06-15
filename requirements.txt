@@ -1,0 +1,15 @@
+pandas
+matplotlib
+streamlit
+numpy
+seaborn
+marketing_attribution_models
+dice-ml
+sklearn
+random
+jsonschema
+numpy
+scikit-learn
+pandas
+h5py
+tqdm
