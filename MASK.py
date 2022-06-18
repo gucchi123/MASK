@@ -21,7 +21,9 @@ def main():
     st.set_page_config(page_title="MASK | Marketing Science Kit (Proto)",
                         page_icon=":bar_chart:" )
     
-    marketing_kits = ["マーケティングミックスモデル", "アトリビューションモデル", "反実仮想"]
+    st.sidebar.header("メニュー")
+    marketing_kits = ["MASKについて", "マーケティングミックスモデル", "アトリビューションモデル", "反実仮想",
+                        "Twitter分析", "ペルソナ分析", "離反顧客分析"]
     
     marketing_kit = st.sidebar.selectbox(
             'マーケティングサイエンスの手法を選択：',marketing_kits
@@ -29,7 +31,37 @@ def main():
 
     df = pd.read_csv("id_level_journey.csv")
 
-    if marketing_kit == "マーケティングミックスモデル":
+    if marketing_kit == "MASKについて":
+        st.header("MASK(Marketing Science Kit):bar_chart:")
+        st.subheader("<基本機能>")
+        st.write("・マーケティングミックスモデル")
+        st.write("オンラインとオフラインの広告が成果指標に対してどの程度効いているか、また、いくらが最適な投資金額であるかを分析する手法です")    
+        st.write("")
+
+        st.write("・アトリビューションモデル")
+        st.write("オンライン広告が成果指標に対してどの程度効いているかをID単位のデータを元に詳細に確認する手法です")
+        st.write("")
+
+        st.write("・反実仮想")
+        st.write("コンバージョンしなかったユーザーをコンバージョンさせるには、どういう手段が有効であったかをシミュレーションとして提案する手法です")
+        st.write("")
+
+        st.write("-----------")
+        st.subheader("<発展機能>")
+        st.write("・Twitter分析")
+        st.write("Twitterのつぶやきからプロダクト・サービス改善のヒントを得る手法です")
+        st.write("")
+
+        st.write("・ペルソナ分析")
+        st.write("顧客理解の解像度をクラスタリング分析で上げるための手法です")
+        st.write("")
+
+        st.write("・離反顧客分析")
+        st.write("離反顧客についての理解を深める・予測を行うための手法です")
+
+
+
+    elif marketing_kit == "マーケティングミックスモデル":
         st.header("マーケティングミックスモデル:bar_chart:")
         #model file
         ping = '2_185_7'
@@ -59,7 +91,7 @@ def main():
                 st.subheader('広告最適化ダッシュボード')
 
                 channels = ["シミュレート結果一覧",
-                "Direct_P", "Email_Marketing_S","Facebook_S", "GoogleDisplay_S",'GoogleSearch_S', "Instagram_S", "Organic_P", "Youtube_S"]
+                 "Email_Marketing_S","Facebook_S", "GoogleDisplay_S",'GoogleSearch_S', "Instagram_S", "Youtube_S"]
                 selected_channel = st.sidebar.selectbox(
                 '広告チャネルを選択：',channels)
 
@@ -137,12 +169,6 @@ def main():
                 if selected_channel == "シミュレート結果一覧":
                     st.image("{}_reallocated_hist.png".format(ping))
  
-                if selected_channel in "Direct_P":
-                    selected_channels = [ i for i in df_training.columns if "Direct" in i if "_S" in i]
-                    #st.write(selected_channels)
-                    for channel in selected_channels:
-                        #st.write(channel)
-                        investment(channel, optimized_file, df_training)
 
                 if selected_channel == "Email_Marketing_S":
                     selected_channels = [ i for i in df_training.columns if "Email_Marketing" in i if "_S" in i]
@@ -150,6 +176,41 @@ def main():
                     for channel in selected_channels:
                         #st.write(channel)
                         investment(channel, optimized_file, df_training)      
+
+                if selected_channel == "Facebook_S":
+                    selected_channels = [ i for i in df_training.columns if "Facebook" in i if "_S" in i]
+                    #st.write(selected_channels)
+                    for channel in selected_channels:
+                        #st.write(channel)
+                        investment(channel, optimized_file, df_training)      
+
+                if selected_channel == "GoogleDisplay_S":
+                    selected_channels = [ i for i in df_training.columns if "GoogleDisplay" in i if "_S" in i]
+                    #st.write(selected_channels)
+                    for channel in selected_channels:
+                        #st.write(channel)
+                        investment(channel, optimized_file, df_training)      
+
+                if selected_channel == "GoogleSearch_S":
+                    selected_channels = [ i for i in df_training.columns if "GoogleSearch" in i if "_S" in i]
+                    #st.write(selected_channels)
+                    for channel in selected_channels:
+                        #st.write(channel)
+                        investment(channel, optimized_file, df_training)      
+
+                if selected_channel == "Instagram_S":
+                    selected_channels = [ i for i in df_training.columns if "Instagram" in i if "_S" in i]
+                    #st.write(selected_channels)
+                    for channel in selected_channels:
+                        #st.write(channel)
+                        investment(channel, optimized_file, df_training)      
+ 
+                if selected_channel == "Youtube_S":
+                    selected_channels = [ i for i in df_training.columns if "Youtube" in i if "_S" in i]
+                    #st.write(selected_channels)
+                    for channel in selected_channels:
+                        #st.write(channel)
+                        investment(channel, optimized_file, df_training)             
 
             visualization(training_data,optimized_file)
     
@@ -255,6 +316,7 @@ def main():
         st.dataframe(train_x)
         st.write(model_logi.score(test_x, test_y))
         y_pred = model_logi.predict(test_x)
+        st.write("---------------")
         st.write(confusion_matrix(test_y, y_pred))
 
         d = dice_ml.Data(dataframe = pd.concat([test_x, test_y], axis=1),# データは、変数とアウトカムの両方が必要
@@ -264,16 +326,50 @@ def main():
         m = dice_ml.Model(model=model_logi,backend="sklearn")
         exp = dice_ml.Dice(d, m)
 
-        
+        st.write("---------------")
+        st.write("")
         pre_counter = test_x.iloc[0:5, :] 
+        st.write("分析対象のユーザー情報")
+        st.dataframe(pre_counter)
         dice_exp = exp.generate_counterfactuals(pre_counter, # 反実仮想を生成したいもとデータ
                                                 total_CFs=3, # 反実仮想の数
                                                 desired_class = "opposite", # 目的とするクラスは反対方向へ、0、1などのクラスラベルでも良い 
                                             )
+        st.write("-------------")
         st.write(dice_exp.visualize_as_dataframe(show_only_changes=True))# show_onlyで変数変化の差分のみを表示
         st.dataframe(dice_exp.visualize_as_dataframe(show_only_changes=True))
      
+
+    elif marketing_kit == "Twitter分析":
+        st.write("Twitter分析（プロダクト改善のための感情分析）の分析結果を確認したい場合には、追加でお問い合わせください")
+        st.write("")
+        st.write("＜イメージ＞")
+        st.image("https://raw.githubusercontent.com/gucchi123/MarketingKits/main/WordCloud.jpg")
+        st.text("ツイッターのデータを用いて、ポジネガ分析・WordCloud等のプロダクト改善のヒントをご提供します")
+        st.write("")
+        st.write("＜必要データ＞")
+        st.write("Twitter API情報")
         
+    
+    
+    elif marketing_kit == "ペルソナ分析":
+        st.write("ペルソナ分析の分析結果を確認したい場合には、追加でお問い合わせください")
+        st.write("")
+        st.write("＜イメージ＞")
+        st.image("https://raw.githubusercontent.com/gucchi123/MarketingKits/main/Free-Personas-Vector.png")
+        st.write("")
+        st.write("＜必要データ＞")
+        st.write("ユーザーID単位でのユーザー登録情報・ユーザー行動データ・コンバージョン有無")
+    
+
+    elif marketing_kit == "離反顧客分析":
+        st.write("離反分析の分析結果を確認したい場合には、追加でお問い合わせください")
+        st.write("")
+        st.write("＜イメージ＞")
+        st.image("https://raw.githubusercontent.com/gucchi123/MarketingKits/main/churn.png")
+        st.write("＜必要データ＞")
+        st.write("ユーザーID単位でのユーザー登録情報・ユーザー行動データ・離反有無")
+
     #権利
     st.sidebar.write("Copyright © 2022 Makoto Mizuguchi. All Rights Reserved.")    
 
