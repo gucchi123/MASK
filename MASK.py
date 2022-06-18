@@ -33,6 +33,12 @@ def main():
 
     if marketing_kit == "MASKについて":
         st.header("MASK(Marketing Science Kit):bar_chart:")
+        st.subheader("<目的>")
+        st.write("マーケティング投資を再現性を持って最適な金額にすることを実現するためのダッシュボードです。基本機能と発展機能に分かれます。")
+        st.text("※各機能に搭載されているデータはダミーデータです")
+        st.write("")
+        
+        st.write("--------")
         st.subheader("<基本機能>")
         st.write("・マーケティングミックスモデル")
         st.write("オンラインとオフラインの広告が成果指標に対してどの程度効いているか、また、いくらが最適な投資金額であるかを分析する手法です")    
