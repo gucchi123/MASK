@@ -23,7 +23,7 @@ def main():
     
     st.sidebar.header("メニュー")
     marketing_kits = ["MASKについて", "マーケティングミックスモデル", "アトリビューションモデル", "反実仮想",
-                        "Twitter分析", "ペルソナ分析", "離反顧客分析"]
+                        "Twitter分析", "ペルソナ分析", "離反顧客分析", "問い合わせ"]
     
     marketing_kit = st.sidebar.selectbox(
             'マーケティングサイエンスの手法を選択：',marketing_kits
@@ -392,6 +392,25 @@ def main():
         st.image("https://raw.githubusercontent.com/gucchi123/MarketingKits/main/churn.png")
         st.write("＜必要データ＞")
         st.write("ユーザーID単位でのユーザー登録情報・ユーザー行動データ・離反有無")
+
+
+    elif marketing_kit == "問い合わせ":
+        st.header("MASKについての問い合わせ")
+        contact_form = """
+        <input type="hidden" name="_captcha" value="false">
+        <form action="https://formsubmit.co/suikou0@gmail.com" method="POST">
+        <input type="text" name="name" placeholder="名前" required>
+        <input type="email" name="email" placeholder="メールアドレス" required>
+        <textarea name="message" placeholder="問い合わせしたい内容を記載ください"></textarea>
+        <button type="submit">Send</button>
+        </form>
+        """
+        st.markdown(contact_form, unsafe_allow_html=True)
+
+        def local_css(file_name):
+            with open(file_name) as f:
+                st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+        local_css("style/style.css")
 
     #権利
     st.sidebar.write("Copyright © 2022 Makoto Mizuguchi. All Rights Reserved.")    
