@@ -31,6 +31,9 @@ def main():
 
     df = pd.read_csv("id_level_journey.csv")
 
+    def gitmodelfit(pngfile):
+        st.image("./{}.png".format(pngfile))
+
     if marketing_kit == "MASKについて":
         st.header("MASK(Marketing Science Kit):bar_chart:")
         st.subheader("<目的>")
@@ -83,10 +86,10 @@ def main():
 
         if DoList == "モデルの正確性確認":
 
-            def gitmodelfit(pngfile):
-                st.subheader('モデルの適合度')
-                st.image("./{}.png".format(pngfile))
-            
+            st.subheader("使用するデータ")
+            st.dataframe(df.iloc[:, 1:].head())
+            st.write("----------")
+            st.subheader('モデルの適合度')
             pngfile = ping
             gitmodelfit(ping)
 
@@ -173,6 +176,7 @@ def main():
                     st.write('-----------------------------------------------------------------------')
                     
                 if selected_channel == "シミュレート結果一覧":
+                    #gitmodelfit("{}_reallocated_hist.png".format(ping))
                     st.image("{}_reallocated_hist.png".format(ping))
  
 
@@ -237,7 +241,7 @@ def main():
         
 
         st.subheader("元データ")
-        st.dataframe(df)
+        st.dataframe(df.iloc[:, 1:])
         st.write("")
         st.write("--------------")
 
@@ -256,6 +260,9 @@ def main():
     
     
     elif marketing_kit == "反実仮想":
+        st.header("反実仮想")
+        st.write("What if分析：コンバージョンしていないユーザーをコンバージョンさせるには、どこのデータをどれだけ動かせばいいかをシミュレーション")
+        
         np.random.seed(0)
 
         def generate_userprofile(nrows=50000):
@@ -319,10 +326,17 @@ def main():
 
         model_logi = LogisticRegression(random_state=123, class_weight="balanced",  C=1,  penalty='l2', max_iter=100)
         model_logi.fit(train_x, train_y)
+        
+        st.subheader("元データ")
         st.dataframe(train_x)
+        
+        st.write("------------")
+        st.subheader("使用するモデルの精度")
+        st.write("スコア")
         st.write(model_logi.score(test_x, test_y))
         y_pred = model_logi.predict(test_x)
-        st.write("---------------")
+
+        st.write("混合行列")
         st.write(confusion_matrix(test_y, y_pred))
 
         d = dice_ml.Data(dataframe = pd.concat([test_x, test_y], axis=1),# データは、変数とアウトカムの両方が必要
@@ -333,20 +347,21 @@ def main():
         exp = dice_ml.Dice(d, m)
 
         st.write("---------------")
-        st.write("")
         pre_counter = test_x.iloc[0:5, :] 
-        st.write("分析対象のユーザー情報")
+        st.subheader("分析対象のユーザー情報")
         st.dataframe(pre_counter)
         dice_exp = exp.generate_counterfactuals(pre_counter, # 反実仮想を生成したいもとデータ
                                                 total_CFs=3, # 反実仮想の数
                                                 desired_class = "opposite", # 目的とするクラスは反対方向へ、0、1などのクラスラベルでも良い 
                                             )
         st.write("-------------")
+        st.subheader("反実仮想の結果")
         st.write(dice_exp.visualize_as_dataframe(show_only_changes=True))# show_onlyで変数変化の差分のみを表示
         st.dataframe(dice_exp.visualize_as_dataframe(show_only_changes=True))
      
 
     elif marketing_kit == "Twitter分析":
+        st.subheader("Twitter分析")
         st.write("Twitter分析（プロダクト改善のための感情分析）の分析結果を確認したい場合には、追加でお問い合わせください")
         st.write("")
         st.write("＜イメージ＞")
@@ -359,6 +374,7 @@ def main():
     
     
     elif marketing_kit == "ペルソナ分析":
+        st.subheader("ペルソナ分析")
         st.write("ペルソナ分析の分析結果を確認したい場合には、追加でお問い合わせください")
         st.write("")
         st.write("＜イメージ＞")
@@ -369,6 +385,7 @@ def main():
     
 
     elif marketing_kit == "離反顧客分析":
+        st.subheader("離反顧客分析")
         st.write("離反分析の分析結果を確認したい場合には、追加でお問い合わせください")
         st.write("")
         st.write("＜イメージ＞")
